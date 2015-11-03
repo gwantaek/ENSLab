@@ -1,0 +1,24 @@
+function val = gui_getparm(parm, format, delimiter)
+%----------------------------------------------------------
+% Input Dialog Parameter
+%
+% parm      : Cell
+% format    : '%s' : string, '%f' : number
+% delimiter : ' ', ',', ';' ...
+% val       : Value
+%
+% Author : Gwan-Taek Lee
+% Last update : 2012. 02. 02
+%----------------------------------------------------------
+
+    val = textscan(parm, '%s', 'delimiter', delimiter);
+    val = val{1};
+    
+    if(strcmp(format,'%f'))
+        for i = 1 : length(val)
+            tmp = textscan(val{i}, '%f');
+            tmp = tmp{1};
+        end
+    end
+    
+end

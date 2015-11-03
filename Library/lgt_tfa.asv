@@ -1,0 +1,34 @@
+function tfa = lgt_tfa(C, dim, type)
+%----------------------------------------------------------
+% Measures of the time-frequency transformed ERP
+%
+% C     : Complex number
+% dim   : Epoch dimension
+% type
+%       'ersp' : Event-Related Spectral Pertubation
+%       'tot'  : Total activity (The average amplitude of the oscillation)
+%       'evk'  : Evoked activity
+%       'idc'  : Induced activity
+%       'itc'  : Inter trial coherence
+%       ''  : Inter trial coherence
+% tfa   : Measure
+
+% Author : Gwan-Taek Lee
+% Last update : 2011. 09. 16
+%----------------------------------------------------------
+
+    switch lower(type)
+        case 'ersp'
+            tfa = mean((abs(C).^2), dim);
+        case 'tot'
+            tfa = mean(abs(C), dim);
+        case 'evk'
+            tfa = abs(mean(C, dim));
+        case 'idc'
+            tfa = mean(abs(C), dim) - abs(mean(C, dim));
+        case 'itc'
+            tfa = abs(mean(C ./ abs(C), dim));
+    end
+            
+
+end

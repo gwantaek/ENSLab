@@ -1,0 +1,44 @@
+function PF = psg_GetPeakFrequency(Head, X, fband, stage)
+%----------------------------------------------------------
+% Detect Sleep Spindle using Z-score threshold in a stage
+%
+% Head   : Data Head
+% X      : Data
+% fband  : Frequency Range (Broad Band)
+% stage  : Sleep Stage
+%
+% Author : Gwan-Taek Lee
+% Last update : 2012. 6. 8
+%----------------------------------------------------------
+
+    fs     = Head.SampRate;
+    tseg   = Head.Stage.Duration * fs;
+    stime  = Head.StartDate + Head.StartTime;    
+    epch   = Head.Stage.Series(:,stage) == stage;
+    n_epch = length(epch);
+    time   = Head.Stage.Time;
+    sidx   = util_GetOffIndex(stime,fs,time(1));
+    eidx   = sidx+(tseg*n_epch)-1;
+
+    X = FirFilter(X, fs, fband, 'hann', 200);
+    X = reshape(X(sidx:eidx), [tseg n_epch]);
+    X = X(:,epch);    
+    X = WindowX(X, 'hann');
+    
+    [P F] = lgt_powerspectrum(X, fs, 1, 2, 'abs');
+    max(P)
+    X2 = reshape(X2, [1 size(X2,1) * size(X2,2)]);
+    
+    X2P = GetPeak(X2,1);
+    thr = prctile(X2(X2P), alpha);    
+    
+    XP = GetPeak(X,1);
+    candi = XP((X(XP) > thr));
+ 
+    candidate = [];
+    for t = 1 : length(time)
+        idx       = bitand(sidx(t) <= candi, candi <= eidx(t));
+        candidate = [candidate candi(idx)];
+    end
+    
+end

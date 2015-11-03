@@ -1,0 +1,36 @@
+function idx = get_objectidx(objs, set)
+%---------------------------------------------------------------------
+% Find the index of the closest (or identical) 'obj' from the 'set'
+%
+% objs   : To find objects
+% set    : The set of numbers
+% idx    : The indexes of objs from the set
+%
+% Author : Gwan-Taek Lee
+% Last update : 2012. 02. 02.
+%---------------------------------------------------------------------
+
+    n_obj = length(objs);
+    n_set = length(set);
+    idx = zeros(1,n_obj);
+    
+    switch objs
+        case isnumeric(objs)
+        case iscell(objs)
+                for o = 1 : n_obj
+        for i = 1 : n_set
+            if (strcmp(obj(o),set(i)))
+                idx(o) = i;
+                break;
+            end
+        end
+    end
+
+        case ischar(objs)
+    end
+           
+    
+    
+    
+    
+end

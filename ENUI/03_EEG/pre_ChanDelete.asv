@@ -1,0 +1,59 @@
+function [handles ok] = pre_ChanDelete(handles)
+%----------------------------------------------------------
+% Channel Delete
+%
+%
+% Author : Gwan-Taek Lee
+% Last update : 2012. 6. 14
+%----------------------------------------------------------
+
+if (handles.n_file > 0) && strcmpi(handles.mode, 'file')
+    
+    selitem = handles.i_file;
+    oldname = handles.Head(selitem(1)).ChanLabel;
+    oldname = util_Cell2Str(oldname,'h');
+    parms   = inputdlg({'Current Channels', 'Delete Channels (Copy & Paste)'},...
+                            'Delete Channels',10,{oldname, ''});
+    
+	DelChanLab = upper(gui_GetParms(parms{2}, '%s', ' '));
+    
+    if ~isempty(DelChanLab)        
+        
+        for i = 1 : length(selitem)
+            Head = handles.Head(selitem(i));
+            disp(['Delete Channel: ' Head.FileName]); pause(0.000000000001);
+            name    = Head.FileName;
+            path    = Head.FilePath;
+            Data    = file_Load(name,path,'Data');
+            
+            ChanLab = upper(Head.ChanLabel);
+            [~,DelIdx] = intersect(ChanLab, DelChanLab);
+            
+            % Channel 라벨에서 제거
+            Data(DelIdx,:) = [];
+            Head.ChanLabel(DelIdx) = [];
+            
+            % Data 채널에서 제거
+            [~,dIdx2] = intersect(Head.DataChan, DelIdx);
+            Head.DataChan(dIdx2) = [];
+            
+            % Reference 채널에서 제거
+            [~,rIdx3] = intersect(Head.RefeChan, DelIdx);
+            Head.RefeChan(rIdx3) = [];
+
+            % Event 채널에서 제거
+            [~,eIdx3] = intersect(Head.EvntChan, DelIdx);
+            Head.RefeChan(eIdx3) = [];
+            
+            file_Save(Head,Data,[],[]);
+            handles.Head(selitem(i)) = Head;
+        end
+        ok = 1;
+    else
+        ok = 0;
+    end
+    
+else
+    msgbox('Select Files!!!','Error','error');
+    ok = 0;
+end

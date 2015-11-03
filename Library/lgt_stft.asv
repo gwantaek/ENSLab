@@ -1,0 +1,26 @@
+function [S f t] = lgt_stft(X, Fs, R, P)
+%----------------------------------------------------------
+% STFT with Hann window
+%
+% X       : Data matrix (only time dimension)
+% Fs      : Sampling rate
+% R       : Length of window
+% P       : Overlap percent (0 ~ 1)
+% NFFT    : 128, 256, 512, 1024... ('f' will have an half of NFFT)
+%         : Default, 1024
+%
+% S       : Fourier coefficients 
+% f       : Discrete fourier transform
+% t       : Time segments
+%
+% Author : Gwan-Taek Lee
+% Last update : 2012. 01. 31.
+%----------------------------------------------------------
+    L = length(X);
+    n_over = ceil(R * P);
+    window = hann(R);
+    nfft = lgt_nfft(R);
+        
+    [S f t] = spectrogram(X, window, n_over, nfft, Fs);
+    
+end

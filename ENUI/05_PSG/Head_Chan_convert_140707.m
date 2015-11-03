@@ -1,0 +1,10 @@
+Head.ChanLabel{1}  = 'F3';
+Head.ChanLabel{2}  = 'F4';
+Head.ChanLabel{3}  = 'C3';
+Head.ChanLabel{4}  = 'C4';
+Head.ChanLabel{5}  = 'P3';
+Head.ChanLabel{6}  = 'P4';
+Head.ChanLabel{7}  = 'O1';
+Head.ChanLabel{8}  = 'O2';
+Head.ChanLabel{9}  = 'E2';
+Head.ChanLabel{10}  = 'E1';

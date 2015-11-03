@@ -1,0 +1,35 @@
+function psg_FindSensitivitySpecificityTable(handles)
+
+
+    Head = handles.Head;
+    for i=1:length(Head.ChanLabel)
+        ChanLab = Head.ChanLabel{i};
+        if ( strcmpi(ChanLab(1:2), 'C3') )
+            break;
+        end
+    end
+    
+    parms   = inputdlg({'Channels','Freq. range', 'alpha', 'ratio', 'duration (sec)'},...
+                        'Parameters setting',1,...
+                        {ChanLab,'10 16','90:1:99','0.3:0.05:0.5','300:20:500'});      
+
+    fband = [];
+    alpha = [];
+    ratio = [];
+    duration = [];
+    
+    eval(['fband = [' parms{2} '];']);                    
+    eval(['alpha = ' parms{3} ';']);
+    eval(['ratio = ' parms{4} ';']);
+    eval(['duration = ' parms{5} ';']);
+    
+    TABLE.col = [{'alpha'}, {'ratio'}, {'duration'},{'sensitivity'},{'specitivity'}];
+    for i=1:1
+        for j=1:1
+            for k=1:1
+                head = psg_DetectSpindleForTable(handles,ChanLab, fband, alpha(i), ratio(j), duration(k));
+                [sen spec] = psg_getSenSpec(head);
+            end
+        end
+    end
+    

@@ -1,0 +1,35 @@
+function lat = fig_detectpeak(erp, tw, freq, base, updown)
+%----------------------------------------------------------
+% Measures of the time-frequency transformed ERP
+%
+% erp   : erp
+% tw    : Time window
+% freq  : sampling rate
+% base  : length of baseline
+% updown: positive or negative peak
+% lat   : latency
+
+% Author : Gwan-Taek Lee
+% Last update : 2011. 09. 16
+%----------------------------------------------------------
+
+    tw_tp = lgt_lat2tp(tw(1),freq,base):lgt_lat2tp(tw(2),freq,base);
+    tp = lgt_getcomponent(erp,tw_tp,updown,'peak');
+
+    lat = lgt_tp2lat(tp,freq,base);
+    
+    time = lgt_tp2lat(1,freq,base):1000/freq:lgt_tp2lat(length(erp),freq,base);
+    plot(time, erp);
+    hold on;
+    
+    % Display Peak
+    rw = round(length(erp)/20);
+    rh = round(length(erp)/20);
+    theta = 0:0.1:2*pi;
+    X1 = cos(theta)*r+lat;
+    Y1 = sin(theta)*r+erp(tp);
+    plot(X1, Y1, 'LineWidth', 2, 'Color', [1 0 0]);
+    
+%     line([lat lat], [erp(tp) erp(tp)+5], 'Color', [1 0 0], 'LineWidth', 2);
+    
+end

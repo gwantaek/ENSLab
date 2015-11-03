@@ -1,0 +1,17 @@
+function [y]=my_filter(x,freq,fs);
+% length=size(x,2);
+% n=3;
+% Rp=3;
+% Rs=80;
+% Pass_freq = freq(1);
+% Stop_freq = freq(2);
+% rate=length/fs;
+% nyquist_freq=fs/2;
+% Wp=[Pass_freq/(fs/2) Stop_freq/(fs/2)];
+% [b,a]=ellip(n,Rp,Rs,Wp);
+% for i=1:size(x,1)
+%     y(i,:)=filtfilt(b,a,x(i,:));
+% end
+
+D = fdesign.bandpass('N, Fc1, Fc2', 20, freq(1), freq(2), fs);
+Hd = design(D, '
